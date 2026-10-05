@@ -1,0 +1,6 @@
+@FuelStations_HostAddress = http://localhost:5239
+
+GET {{FuelStations_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
