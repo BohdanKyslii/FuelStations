@@ -1,0 +1,36 @@
+﻿root = true
+
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+
+[*.{json,yml,yaml}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.cs]
+indent_size = 4
+max_line_length = 90
+
+# Namespaces: "namespace X;" instead of "namespace X { ... }"
+csharp_style_namespace_declarations = file_scoped:warning
+
+# Always use braces for if/for/while, even for one-liners
+csharp_prefer_braces = true:warning
+
+# "using System..." first, then others alphabetically
+dotnet_sort_system_directives_first = true
+
+# Opening brace on a new line (C# standard)
+csharp_new_line_before_open_brace = all
+
+# Fields assigned only in the constructor must be readonly
+dotnet_style_readonly_field = true:warning
+
+# Prefer "var" when the type is obvious
+csharp_style_var_when_type_is_apparent = true:suggestion

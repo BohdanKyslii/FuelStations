@@ -1,4 +1,4 @@
-﻿namespace FuelStations.Entities;
+namespace FuelStations.Entities;
 
 /// <summary>
 /// Workstation identifier (4 digits, e.g., 1030) linked to a single operator cash register.
@@ -10,11 +10,11 @@ public class StationTerminal
     /// Station ID: unique, immutable, assigned manually (1000-9999). Primary key.
     /// </summary>
     public int Number { get; set; }
-    
+
     public int StationId { get; set; }
-    
+
     public Station Station { get; set; } = null!;
-    
+
     /// <summary>
     /// Optional note, e.g. "Cash Desk 1, description of requirements.
     /// </summary>

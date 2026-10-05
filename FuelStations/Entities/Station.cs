@@ -1,4 +1,4 @@
-﻿namespace FuelStations.Entities;
+namespace FuelStations.Entities;
 
 /// <summary>
 /// Gas station (physical site). Addressed in the API by any of its station IDs.
@@ -15,7 +15,7 @@ public class Station
     public string City { get; set; } = string.Empty;
 
     public string Address { get; set; } = string.Empty;
-    
+
     public string? Descripton { get; set; } = string.Empty;
 
     /// <summary>

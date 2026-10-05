@@ -1,4 +1,4 @@
-﻿/// <summary>
+/// <summary>
 /// Supported fuel types.
 /// </summary>
 public enum FuelType
