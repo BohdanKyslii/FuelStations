@@ -7,9 +7,8 @@ public record FuelTypeDto(
     DateTime CreatedAt);
 
 public record TerminalDto(
-    int Bumber,
+    int Number,
     string? Description);
-
 
 public record StationListItemDto(
     List<int> Numbers,
@@ -23,19 +22,20 @@ public record StationFuelDto(
     string FuelTypeCode,
     string FuelTypeName,
     decimal Price,
-    bool IsActive,
+    bool IsAvailable,
     DateTime PriceUpdatedAt);
 
 public record StationDetailsDto(
     string Name,
     string City,
     string Address,
+    string? Description,
     bool IsActive,
     DateTime CreatedAt,
     List<TerminalDto> Terminals,
     List<StationFuelDto> Fuels);
 
-public record PageResult<T>(
+public record PagedResult<T>(
     List<T> Items,
     int Page,
     int PageSize,

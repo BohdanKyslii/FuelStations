@@ -38,6 +38,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(s => s.Name).HasMaxLength(100).IsRequired();
             entity.Property(s => s.City).HasMaxLength(100).IsRequired();
             entity.Property(s => s.Address).HasMaxLength(250).IsRequired();
+            entity.Property(s => s.Description).HasMaxLength(500);
 
             // Station IDs are bound to the station name, so names must be unique.
             entity.HasIndex(s => s.Name).IsUnique();
