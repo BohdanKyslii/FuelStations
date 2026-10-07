@@ -16,7 +16,7 @@ public class Station
 
     public string Address { get; set; } = string.Empty;
 
-    public string? Descripton { get; set; } = string.Empty;
+    public string? Description { get; set; }
 
     /// <summary>
     /// True if the station is operating, false if temporarily closed.

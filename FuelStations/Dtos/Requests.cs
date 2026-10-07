@@ -23,7 +23,7 @@ public class StationQuery
     public int? Number { get; set; }
 
     [Range(1, int.MaxValue, ErrorMessage = "Номер сторінки має бути не меншим за 1.")]
-    public int? Page { get; set; } = 1;
+    public int Page { get; set; } = 1;
 
     [Range(1, Pagination.MaxPageSize, ErrorMessage = "Розмір сторінки має бути від 1 до 100.")]
     public int PageSize { get; set; } = Pagination.DefaultPageSize;
@@ -74,7 +74,6 @@ public class TerminalRequest
 /// <summary>
 /// Editable station info. Station IDs are immutable and not part of this payload.
 /// </summary>
-
 public class UpdateStationRequest
 {
     [Required(ErrorMessage = "Вкажіть назву АЗС.")]
@@ -83,11 +82,14 @@ public class UpdateStationRequest
 
     [Required(ErrorMessage = "Вкажіть місто.")]
     [MaxLength(100, ErrorMessage = "Назва міста не може бути довшою за 100 символів.")]
-    public string? City { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Вкажіть адресу АЗС.")]
-    [MaxLength(100, ErrorMessage = "Адреса не може бути довшою за 250 символів.")]
-    public string Aaddres { get; set; } = string.Empty;
+    [MaxLength(250, ErrorMessage = "Адреса не може бути довшою за 250 символів.")]
+    public string Address { get; set; } = string.Empty;
+
+    [MaxLength(500, ErrorMessage = "Опис не може бути довшим за 500 символів.")]
+    public string? Description { get; set; }
 
     [Required(ErrorMessage = "Вкажіть статус роботи АЗС (isActive).")]
     public bool? IsActive { get; set; }
@@ -116,7 +118,7 @@ public class AddFuelRequest
     [Range(0.01, 100_000, ErrorMessage = "Ціна має бути більшою за нуль.")]
     public decimal? Price { get; set; }
 
-    public bool? IsActive { get; set; } = true;
+    public bool IsAvailable { get; set; } = true;
 }
 
 /// <summary>
