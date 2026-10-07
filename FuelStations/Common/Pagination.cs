@@ -1,4 +1,4 @@
-namespace FuelStations.Common;
+﻿namespace FuelStations.Common;
 
 /// <summary>
 /// Pagination limits shared by validation attributes and controllers.

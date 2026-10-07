@@ -1,4 +1,4 @@
-namespace FuelStations.Entities;
+﻿namespace FuelStations.Entities;
 
 /// <summary>
 /// Fuel offered at a station, with its current price.

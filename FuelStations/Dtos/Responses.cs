@@ -1,4 +1,4 @@
-namespace FuelStations.Dtos;
+﻿namespace FuelStations.Dtos;
 
 public record FuelTypeDto(
     string Code,

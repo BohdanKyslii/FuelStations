@@ -1,4 +1,4 @@
-namespace FuelStations.Entities;
+﻿namespace FuelStations.Entities;
 
 /// <summary>
 /// Fuel type reference record (e.g. A95, DIESEL), managed via the API.
