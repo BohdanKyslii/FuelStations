@@ -1,0 +1,594 @@
+@baseUrl = http://localhost:5080
+
+# Demo data for an EMPTY database: 5 fuel types, 10 stations (BRSM addresses), prices.
+# Run All once after "docker compose down -v" + first API start; a second run returns 400 (duplicates).
+
+### Fuel type A95BIO
+POST {{baseUrl}}/api/fuel-types
+Content-Type: application/json
+
+{
+  "code": "A95BIO",
+  "name": "Бензин А95 біо"
+}
+
+### Fuel type A95E_PLUS
+POST {{baseUrl}}/api/fuel-types
+Content-Type: application/json
+
+{
+  "code": "A95E_PLUS",
+  "name": "Бензин А95Е Plus"
+}
+
+### Fuel type GAS
+POST {{baseUrl}}/api/fuel-types
+Content-Type: application/json
+
+{
+  "code": "GAS",
+  "name": "Газ"
+}
+
+### Fuel type DPE
+POST {{baseUrl}}/api/fuel-types
+Content-Type: application/json
+
+{
+  "code": "DPE",
+  "name": "ДПЕ"
+}
+
+### Fuel type DPE_PLUS
+POST {{baseUrl}}/api/fuel-types
+Content-Type: application/json
+
+{
+  "code": "DPE_PLUS",
+  "name": "ДПЕ Plus"
+}
+
+### Station АЗС Київ Маяковського
+POST {{baseUrl}}/api/stations
+Content-Type: application/json
+
+{
+  "name": "АЗС Київ Маяковського",
+  "city": "Київ",
+  "address": "пр-т Володимира Маяковського, 54А",
+  "description": "Магазин категорії А+",
+  "isActive": true,
+  "terminals": [
+    {
+      "number": 1030,
+      "description": "Каса 1"
+    },
+    {
+      "number": 1031,
+      "description": "Каса 2"
+    }
+  ]
+}
+
+### Station АЗС Київ Теліги
+POST {{baseUrl}}/api/stations
+Content-Type: application/json
+
+{
+  "name": "АЗС Київ Теліги",
+  "city": "Київ",
+  "address": "вул. Олени Теліги, 12Б",
+  "description": "Магазин категорії А+",
+  "isActive": true,
+  "terminals": [
+    {
+      "number": 1278
+    }
+  ]
+}
+
+### Station АЗС Київ Жуковського
+POST {{baseUrl}}/api/stations
+Content-Type: application/json
+
+{
+  "name": "АЗС Київ Жуковського",
+  "city": "Київ",
+  "address": "вул. Жуковського, 22",
+  "description": "Магазин категорії А",
+  "isActive": true,
+  "terminals": [
+    {
+      "number": 1054
+    }
+  ]
+}
+
+### Station АЗС Київ Правди
+POST {{baseUrl}}/api/stations
+Content-Type: application/json
+
+{
+  "name": "АЗС Київ Правди",
+  "city": "Київ",
+  "address": "пр-т Правди, 39А",
+  "description": "Магазин категорії С",
+  "isActive": true,
+  "terminals": [
+    {
+      "number": 1178
+    }
+  ]
+}
+
+### Station АЗС Вінниця 3
+POST {{baseUrl}}/api/stations
+Content-Type: application/json
+
+{
+  "name": "АЗС Вінниця 3",
+  "city": "Вінниця",
+  "address": "Хмельницьке шосе, 114/1",
+  "description": "Магазин категорії А",
+  "isActive": true,
+  "terminals": [
+    {
+      "number": 1069,
+      "description": "Каса 1"
+    },
+    {
+      "number": 1070,
+      "description": "Каса 2"
+    }
+  ]
+}
+
+### Station АЗС Львів Городоцька
+POST {{baseUrl}}/api/stations
+Content-Type: application/json
+
+{
+  "name": "АЗС Львів Городоцька",
+  "city": "Львів",
+  "address": "вул. Городоцька, 116Г",
+  "description": "Магазин категорії С",
+  "isActive": true,
+  "terminals": [
+    {
+      "number": 1199
+    }
+  ]
+}
+
+### Station АЗС Одеса Балківська
+POST {{baseUrl}}/api/stations
+Content-Type: application/json
+
+{
+  "name": "АЗС Одеса Балківська",
+  "city": "Одеса",
+  "address": "вул. Балківська, 1",
+  "description": "Магазин категорії А",
+  "isActive": true,
+  "terminals": [
+    {
+      "number": 1099
+    }
+  ]
+}
+
+### Station АЗС Одеса Овідіопольська дорога
+POST {{baseUrl}}/api/stations
+Content-Type: application/json
+
+{
+  "name": "АЗС Одеса Овідіопольська дорога",
+  "city": "Одеса",
+  "address": "Овідіопольська дорога, 3А",
+  "description": "Магазин категорії А",
+  "isActive": true,
+  "terminals": [
+    {
+      "number": 1100
+    }
+  ]
+}
+
+### Station АЗС Харків Клочківська
+POST {{baseUrl}}/api/stations
+Content-Type: application/json
+
+{
+  "name": "АЗС Харків Клочківська",
+  "city": "Харків",
+  "address": "вул. Клочківська, 134А",
+  "description": "Магазин категорії С",
+  "isActive": true,
+  "terminals": [
+    {
+      "number": 1220
+    }
+  ]
+}
+
+### Station АЗС Херсон Сенявіна
+POST {{baseUrl}}/api/stations
+Content-Type: application/json
+
+{
+  "name": "АЗС Херсон Сенявіна",
+  "city": "Херсон",
+  "address": "пр-т Адмірала Сенявіна, 37",
+  "description": "Магазин категорії С",
+  "isActive": false,
+  "terminals": [
+    {
+      "number": 1247
+    }
+  ]
+}
+
+### Fuel A95BIO at 1030 (Київ Маяковського)
+POST {{baseUrl}}/api/stations/1030/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95BIO",
+  "price": 85.99
+}
+
+### Fuel A95E_PLUS at 1031 (Київ Маяковського)
+POST {{baseUrl}}/api/stations/1031/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95E_PLUS",
+  "price": 87.77
+}
+
+### Fuel GAS at 1030 (Київ Маяковського)
+POST {{baseUrl}}/api/stations/1030/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "GAS",
+  "price": 42.79
+}
+
+### Fuel DPE at 1031 (Київ Маяковського)
+POST {{baseUrl}}/api/stations/1031/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE",
+  "price": 96.99
+}
+
+### Fuel DPE_PLUS at 1030 (Київ Маяковського)
+POST {{baseUrl}}/api/stations/1030/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE_PLUS",
+  "price": 97.90
+}
+
+### Fuel A95BIO at 1278 (Київ Теліги)
+POST {{baseUrl}}/api/stations/1278/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95BIO",
+  "price": 85.99
+}
+
+### Fuel A95E_PLUS at 1278 (Київ Теліги)
+POST {{baseUrl}}/api/stations/1278/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95E_PLUS",
+  "price": 87.77
+}
+
+### Fuel GAS at 1278 (Київ Теліги)
+POST {{baseUrl}}/api/stations/1278/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "GAS",
+  "price": 42.79
+}
+
+### Fuel DPE at 1278 (Київ Теліги)
+POST {{baseUrl}}/api/stations/1278/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE",
+  "price": 96.99
+}
+
+### Fuel DPE_PLUS at 1278 (Київ Теліги)
+POST {{baseUrl}}/api/stations/1278/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE_PLUS",
+  "price": 97.90,
+  "isAvailable": false
+}
+
+### Fuel A95BIO at 1054 (Київ Жуковського)
+POST {{baseUrl}}/api/stations/1054/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95BIO",
+  "price": 85.99
+}
+
+### Fuel A95E_PLUS at 1054 (Київ Жуковського)
+POST {{baseUrl}}/api/stations/1054/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95E_PLUS",
+  "price": 87.77
+}
+
+### Fuel DPE at 1054 (Київ Жуковського)
+POST {{baseUrl}}/api/stations/1054/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE",
+  "price": 96.99
+}
+
+### Fuel DPE_PLUS at 1054 (Київ Жуковського)
+POST {{baseUrl}}/api/stations/1054/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE_PLUS",
+  "price": 97.90
+}
+
+### Fuel A95BIO at 1178 (Київ Правди)
+POST {{baseUrl}}/api/stations/1178/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95BIO",
+  "price": 85.99
+}
+
+### Fuel GAS at 1178 (Київ Правди)
+POST {{baseUrl}}/api/stations/1178/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "GAS",
+  "price": 42.79
+}
+
+### Fuel DPE at 1178 (Київ Правди)
+POST {{baseUrl}}/api/stations/1178/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE",
+  "price": 96.99
+}
+
+### Fuel A95BIO at 1069 (Вінниця 3)
+POST {{baseUrl}}/api/stations/1069/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95BIO",
+  "price": 85.99
+}
+
+### Fuel A95E_PLUS at 1070 (Вінниця 3)
+POST {{baseUrl}}/api/stations/1070/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95E_PLUS",
+  "price": 87.77
+}
+
+### Fuel DPE at 1069 (Вінниця 3)
+POST {{baseUrl}}/api/stations/1069/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE",
+  "price": 96.99
+}
+
+### Fuel DPE_PLUS at 1070 (Вінниця 3)
+POST {{baseUrl}}/api/stations/1070/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE_PLUS",
+  "price": 97.90
+}
+
+### Fuel A95BIO at 1199 (Львів Городоцька)
+POST {{baseUrl}}/api/stations/1199/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95BIO",
+  "price": 85.99
+}
+
+### Fuel A95E_PLUS at 1199 (Львів Городоцька)
+POST {{baseUrl}}/api/stations/1199/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95E_PLUS",
+  "price": 87.77
+}
+
+### Fuel GAS at 1199 (Львів Городоцька)
+POST {{baseUrl}}/api/stations/1199/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "GAS",
+  "price": 42.79
+}
+
+### Fuel DPE at 1199 (Львів Городоцька)
+POST {{baseUrl}}/api/stations/1199/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE",
+  "price": 96.99
+}
+
+### Fuel A95BIO at 1099 (Одеса Балківська)
+POST {{baseUrl}}/api/stations/1099/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95BIO",
+  "price": 85.99
+}
+
+### Fuel A95E_PLUS at 1099 (Одеса Балківська)
+POST {{baseUrl}}/api/stations/1099/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95E_PLUS",
+  "price": 87.77
+}
+
+### Fuel GAS at 1099 (Одеса Балківська)
+POST {{baseUrl}}/api/stations/1099/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "GAS",
+  "price": 42.79
+}
+
+### Fuel DPE at 1099 (Одеса Балківська)
+POST {{baseUrl}}/api/stations/1099/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE",
+  "price": 96.99
+}
+
+### Fuel DPE_PLUS at 1099 (Одеса Балківська)
+POST {{baseUrl}}/api/stations/1099/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE_PLUS",
+  "price": 97.90
+}
+
+### Fuel A95BIO at 1100 (Одеса Овідіопольська дорога)
+POST {{baseUrl}}/api/stations/1100/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95BIO",
+  "price": 85.99
+}
+
+### Fuel A95E_PLUS at 1100 (Одеса Овідіопольська дорога)
+POST {{baseUrl}}/api/stations/1100/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95E_PLUS",
+  "price": 87.77,
+  "isAvailable": false
+}
+
+### Fuel GAS at 1100 (Одеса Овідіопольська дорога)
+POST {{baseUrl}}/api/stations/1100/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "GAS",
+  "price": 42.79
+}
+
+### Fuel DPE_PLUS at 1100 (Одеса Овідіопольська дорога)
+POST {{baseUrl}}/api/stations/1100/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE_PLUS",
+  "price": 97.90
+}
+
+### Fuel A95E_PLUS at 1220 (Харків Клочківська)
+POST {{baseUrl}}/api/stations/1220/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95E_PLUS",
+  "price": 87.77
+}
+
+### Fuel DPE at 1220 (Харків Клочківська)
+POST {{baseUrl}}/api/stations/1220/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE",
+  "price": 96.99
+}
+
+### Fuel DPE_PLUS at 1220 (Харків Клочківська)
+POST {{baseUrl}}/api/stations/1220/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE_PLUS",
+  "price": 97.90
+}
+
+### Fuel A95BIO at 1247 (Херсон Сенявіна)
+POST {{baseUrl}}/api/stations/1247/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A95BIO",
+  "price": 85.99,
+  "isAvailable": false
+}
+
+### Fuel GAS at 1247 (Херсон Сенявіна)
+POST {{baseUrl}}/api/stations/1247/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "GAS",
+  "price": 42.79,
+  "isAvailable": false
+}
+
+### Fuel DPE at 1247 (Херсон Сенявіна)
+POST {{baseUrl}}/api/stations/1247/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "DPE",
+  "price": 96.99,
+  "isAvailable": false
+}
