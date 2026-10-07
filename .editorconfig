@@ -17,6 +17,9 @@ trim_trailing_whitespace = false
 indent_size = 4
 max_line_length = 90
 
+# .NET convention: C# files are saved as UTF-8 with BOM (Rider and Visual Studio do this)
+charset = utf-8-bom
+
 # Namespaces: "namespace X;" instead of "namespace X { ... }"
 csharp_style_namespace_declarations = file_scoped:warning
 

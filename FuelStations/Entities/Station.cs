@@ -1,4 +1,4 @@
-namespace FuelStations.Entities;
+﻿namespace FuelStations.Entities;
 
 /// <summary>
 /// Gas station (physical site). Addressed in the API by any of its station IDs.

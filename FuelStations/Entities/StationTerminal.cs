@@ -1,4 +1,4 @@
-namespace FuelStations.Entities;
+﻿namespace FuelStations.Entities;
 
 /// <summary>
 /// Workstation identifier (4 digits, e.g., 1030) linked to a single operator cash register.
