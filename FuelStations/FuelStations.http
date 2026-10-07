@@ -1,6 +1,177 @@
-@FuelStations_HostAddress = http://localhost:5239
+@baseUrl = http://localhost:5080
 
-GET {{FuelStations_HostAddress}}/weatherforecast/
-Accept: application/json
+# Automated API checks. Requires the demo data from demo-data.http.
+# Cleans up after itself, so it can be run again (on Docker or Neon).
 
-###
+### 1. Demo fuel types are present
+GET {{baseUrl}}/api/fuel-types
+
+> {%
+    client.test("Fuel types returned", function () {
+        client.assert(response.status === 200, "Expected 200, got " + response.status);
+        client.assert(response.body.some(f => f.code === "DPE_PLUS"), "Run demo-data.http first");
+    });
+%}
+
+### 2. Create a new fuel type (code is normalized to upper case)
+POST {{baseUrl}}/api/fuel-types
+Content-Type: application/json
+
+{
+  "code": "a100",
+  "name": "Бензин А100"
+}
+
+> {%
+    client.test("Fuel type created", function () {
+        client.assert(response.status === 201, "Expected 201, got " + response.status);
+        client.assert(response.body.code === "A100", "Code must be upper case");
+    });
+%}
+
+### 3. Duplicate fuel type code -> 400
+POST {{baseUrl}}/api/fuel-types
+Content-Type: application/json
+
+{
+  "code": "A100",
+  "name": "А100 ще раз"
+}
+
+> {%
+    client.test("Duplicate code rejected", function () {
+        client.assert(response.status === 400, "Expected 400, got " + response.status);
+    });
+%}
+
+### 4. Create a station with two station IDs
+POST {{baseUrl}}/api/stations
+Content-Type: application/json
+
+{
+  "name": "АЗС Дніпро Набережна",
+  "city": "Дніпро",
+  "address": "Набережна Перемоги, 1",
+  "description": "Нова АЗС, магазин категорії В",
+  "isActive": true,
+  "terminals": [
+    { "number": 4101, "description": "Каса 1, колонки 1–7" },
+    { "number": 4102, "description": "Каса 2, колонки 8–14" }
+  ]
+}
+
+> {%
+    client.test("Station created with two IDs", function () {
+        client.assert(response.status === 201, "Expected 201, got " + response.status);
+        client.assert(response.body.terminals.length === 2, "Expected two station IDs");
+    });
+%}
+
+### 5. Sell the new fuel type at the new station
+POST {{baseUrl}}/api/stations/4101/fuels
+Content-Type: application/json
+
+{
+  "fuelTypeCode": "A100",
+  "price": 99.49
+}
+
+> {%
+    client.test("Fuel added to station", function () {
+        client.assert(response.status === 201, "Expected 201, got " + response.status);
+        client.assert(response.body.fuelTypeName === "Бензин А100", "Expected fuel type name");
+    });
+%}
+
+### 6. Second station ID returns the same station with the new fuel
+GET {{baseUrl}}/api/stations/4102
+
+> {%
+    client.test("Same station via second ID", function () {
+        client.assert(response.status === 200, "Expected 200, got " + response.status);
+        client.assert(response.body.name === "АЗС Дніпро Набережна", "Wrong station");
+        client.assert(response.body.fuels.some(f => f.fuelTypeCode === "A100"), "A100 missing");
+    });
+%}
+
+### 7. Filter stations by the new fuel type
+GET {{baseUrl}}/api/stations?fuelType=a100
+
+> {%
+    client.test("Filter by fuel type", function () {
+        client.assert(response.body.totalCount === 1, "Expected exactly one station");
+    });
+%}
+
+### 8. Change price: priceUpdatedAt must change
+PATCH {{baseUrl}}/api/stations/4102/fuels/A100
+Content-Type: application/json
+
+{
+  "price": 99.99
+}
+
+> {%
+    client.test("Price updated", function () {
+        client.assert(response.status === 200, "Expected 200, got " + response.status);
+        client.assert(response.body.price === 99.99, "Price not updated");
+    });
+%}
+
+### 9. Fuel type in use can't be deleted -> 400
+DELETE {{baseUrl}}/api/fuel-types/A100
+
+> {%
+    client.test("Used fuel type protected", function () {
+        client.assert(response.status === 400, "Expected 400, got " + response.status);
+    });
+%}
+
+### 10. Demo station with two IDs: both IDs lead to the same station
+GET {{baseUrl}}/api/stations/1031
+
+> {%
+    client.test("Station by its second ID", function () {
+        client.assert(response.status === 200, "Expected 200, got " + response.status);
+        client.assert(response.body.name === "АЗС Київ Маяковського", "Wrong station");
+        client.assert(response.body.terminals.some(t => t.number === 1030), "ID 1030 missing");
+    });
+%}
+
+### 11. Filter by availability: only open stations in the city with fuel in stock
+GET {{baseUrl}}/api/stations?city=київ&isActive=true&fuelType=GAS
+
+> {%
+    client.test("Filter by city, status and fuel", function () {
+        client.assert(response.status === 200, "Expected 200, got " + response.status);
+        client.assert(response.body.items.length > 0, "Expected stations with gas in Kyiv");
+        client.assert(response.body.items.every(s => s.city === "Київ" && s.isActive), "Wrong filter");
+    });
+%}
+
+### 12. Unknown station ID -> 404
+GET {{baseUrl}}/api/stations/9999
+
+> {%
+    client.test("Unknown station", function () {
+        client.assert(response.status === 404, "Expected 404, got " + response.status);
+    });
+%}
+
+### 13. Cleanup: delete the test station (by its second ID)
+DELETE {{baseUrl}}/api/stations/4102
+
+> {%
+    client.test("Station deleted", function () {
+        client.assert(response.status === 204, "Expected 204, got " + response.status);
+    });
+%}
+
+### 14. Fuel type is no longer used, so it can be deleted
+DELETE {{baseUrl}}/api/fuel-types/A100
+
+> {%
+    client.test("Fuel type deleted", function () {
+        client.assert(response.status === 204, "Expected 204, got " + response.status);
+    });
+%}
