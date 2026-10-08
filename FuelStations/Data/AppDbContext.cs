@@ -40,7 +40,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(s => s.Address).HasMaxLength(250).IsRequired();
             entity.Property(s => s.Description).HasMaxLength(500);
 
-            // ID АЗС прив'язані до назви АЗС, тому назви мають бути унікальними.
+            // Назва АЗС унікальна: за нею ID АЗС прив'язані до конкретної заправки.
+            // Унікальність самих ID АЗС гарантує первинний ключ StationTerminals.Number.
             entity.HasIndex(s => s.Name).IsUnique();
 
             // Пришвидшує фільтрацію за містом.
@@ -49,7 +50,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
         modelBuilder.Entity<StationTerminal>(entity =>
         {
-            // Бізнес-ID АЗС — природний первинний ключ, задається вручну.
+            // ID АЗС — природний первинний ключ: унікальний у всій БД і задається вручну.
+            // Один ID не може належати двом АЗС одночасно.
             entity.HasKey(t => t.Number);
             entity.Property(t => t.Number).ValueGeneratedNever();
 
