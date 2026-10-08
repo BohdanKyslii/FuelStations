@@ -2,6 +2,7 @@
 
 /// <summary>
 /// Пальне на АЗС з поточною ціною та наявністю.
+/// Fuel offered at a station, with its current price and availability.
 /// </summary>
 public class StationFuel
 {
@@ -13,6 +14,7 @@ public class StationFuel
 
     /// <summary>
     /// Зовнішній ключ на <see cref="FuelType.Code"/>.
+    /// Foreign key to <see cref="FuelType.Code"/>.
     /// </summary>
     public string FuelTypeCode { get; set; } = string.Empty;
 

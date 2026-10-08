@@ -8,6 +8,7 @@ namespace FuelStations.Controllers;
 
 /// <summary>
 /// API АЗС. Кожна АЗС адресується будь-яким зі своїх чотиризначних ID АЗС.
+/// Stations API. Every station is addressed by any of its 4-digit station IDs.
 /// </summary>
 [ApiController]
 [Route("api/stations")]
@@ -16,6 +17,8 @@ public class StationsController(AppDbContext db) : ApiControllerBase
     /// <summary>
     /// Повертає сторінку списку АЗС з фільтрами: місто, статус,
     /// код пального в наявності та ID АЗС.
+    /// Returns a paginated list of stations filtered by city, status,
+    /// available fuel type code and station ID.
     /// </summary>
     [HttpGet]
     public async Task<ActionResult<PagedResult<StationListItemDto>>> GetStations(
@@ -67,6 +70,7 @@ public class StationsController(AppDbContext db) : ApiControllerBase
 
     /// <summary>
     /// Повертає АЗС за будь-яким її ID разом з усіма ID, пальним і цінами.
+    /// Returns a station by any of its station IDs, with all its IDs, fuels and prices.
     /// </summary>
     [HttpGet("{number:int}")]
     public async Task<ActionResult<StationDetailsDto>> GetStation(int number)
@@ -102,11 +106,13 @@ public class StationsController(AppDbContext db) : ApiControllerBase
 
     /// <summary>
     /// Створює АЗС з одним або кількома ID АЗС.
+    /// Creates a station with one or more station IDs.
     /// </summary>
     [HttpPost]
     public async Task<ActionResult<StationDetailsDto>> CreateStation(CreateStationRequest request)
     {
         // Значення гарантовані валідацією [Required] і [Range].
+        // Values are guaranteed by [Required] and [Range] validation.
         var numbers = request.Terminals.Select(t => t.Number!.Value).ToList();
 
         if (numbers.Count != numbers.Distinct().Count())
@@ -161,6 +167,7 @@ public class StationsController(AppDbContext db) : ApiControllerBase
 
     /// <summary>
     /// Змінює дані АЗС. ID АЗС незмінні, тут їх змінити не можна.
+    /// Updates station info. Station IDs are immutable and cannot be changed here.
     /// </summary>
     [HttpPut("{number:int}")]
     public async Task<ActionResult<StationDetailsDto>> UpdateStation(
@@ -202,6 +209,7 @@ public class StationsController(AppDbContext db) : ApiControllerBase
 
     /// <summary>
     /// Видаляє АЗС повністю (з усіма ID і пальним) за будь-яким її ID.
+    /// Deletes the whole station (all its station IDs and fuels) by any of its station IDs.
     /// </summary>
     [HttpDelete("{number:int}")]
     public async Task<IActionResult> DeleteStation(int number)
@@ -222,6 +230,7 @@ public class StationsController(AppDbContext db) : ApiControllerBase
 
     /// <summary>
     /// Додає новий ID до наявної АЗС (наприклад, нове вікно каси).
+    /// Adds a new station ID to an existing station (e.g. a new cashier window).
     /// </summary>
     [HttpPost("{number:int}/terminals")]
     public async Task<ActionResult<TerminalDto>> AddTerminal(int number, TerminalRequest request)
@@ -262,6 +271,7 @@ public class StationsController(AppDbContext db) : ApiControllerBase
 
     /// <summary>
     /// Додає на АЗС активний вид пального з ціною.
+    /// Adds an active fuel type with price to a station.
     /// </summary>
     [HttpPost("{number:int}/fuels")]
     public async Task<ActionResult<StationFuelDto>> AddFuel(int number, AddFuelRequest request)
@@ -320,6 +330,7 @@ public class StationsController(AppDbContext db) : ApiControllerBase
 
     /// <summary>
     /// Змінює ціну та/або наявність пального на АЗС.
+    /// Updates price and/or availability of a fuel at a station.
     /// </summary>
     [HttpPatch("{number:int}/fuels/{fuelTypeCode}")]
     public async Task<ActionResult<StationFuelDto>> UpdateFuel(
@@ -368,6 +379,7 @@ public class StationsController(AppDbContext db) : ApiControllerBase
 
     /// <summary>
     /// Перетворює ID АЗС на внутрішній ключ АЗС; null, якщо такого ID немає.
+    /// Resolves a station ID to the internal station key, or null if the ID is unknown.
     /// </summary>
     private Task<int?> FindStationIdAsync(int number) =>
         db.StationTerminals
@@ -377,6 +389,7 @@ public class StationsController(AppDbContext db) : ApiControllerBase
 
     /// <summary>
     /// Перетворює пальне АЗС на DTO. Навігація FuelType має бути завантажена.
+    /// Maps a station fuel to DTO. Requires the FuelType navigation to be loaded.
     /// </summary>
     private static StationFuelDto ToFuelDto(StationFuel fuel) =>
         new(fuel.FuelTypeCode, fuel.FuelType.Name, fuel.Price, fuel.IsAvailable, fuel.PriceUpdatedAt);

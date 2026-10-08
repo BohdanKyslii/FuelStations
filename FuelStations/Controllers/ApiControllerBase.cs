@@ -5,6 +5,7 @@ namespace FuelStations.Controllers;
 
 /// <summary>
 /// Спільні помічники для контролерів API: єдиний формат помилок і безпечне збереження.
+/// Shared helpers for API controllers: unified error responses and safe saving.
 /// </summary>
 public abstract class ApiControllerBase : ControllerBase
 {
@@ -19,6 +20,8 @@ public abstract class ApiControllerBase : ControllerBase
     /// <summary>
     /// Зберігає зміни; повертає false, якщо порушено обмеження БД
     /// (наприклад, дублікат, створений паралельним запитом).
+    /// Saves changes; returns false if a database constraint was violated
+    /// (e.g. a duplicate created by a concurrent request).
     /// </summary>
     protected static async Task<bool> TrySaveChangesAsync(DbContext db)
     {
@@ -36,6 +39,7 @@ public abstract class ApiControllerBase : ControllerBase
     /// <summary>
     /// Нормалізує бізнес-код: прибирає пробіли й переводить у верхній регістр
     /// ("a95 " → "A95").
+    /// Normalizes a business code: trims spaces and converts to upper case ("a95 " → "A95").
     /// </summary>
     protected static string NormalizeCode(string code) => code.Trim().ToUpperInvariant();
 
