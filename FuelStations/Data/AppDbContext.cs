@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FuelStations.Data;
 
 /// <summary>
+/// Контекст БД EF Core: точка входу для всіх запитів і налаштування схеми.
 /// EF Core database context: entry point for all queries and schema configuration.
 /// </summary>
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
@@ -20,6 +21,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     {
         modelBuilder.Entity<FuelType>(entity =>
         {
+            // Бізнес-код — природний первинний ключ.
             // Business code is the natural primary key.
             entity.HasKey(f => f.Code);
             entity.Property(f => f.Code).HasMaxLength(20);
@@ -27,6 +29,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
             entity.HasIndex(f => f.Name).IsUnique();
 
+            // Формат коду: 2–20 великих латинських літер, цифр або "_".
             // Code format: 2-20 upper-case Latin letters, digits or "_".
             entity.ToTable(table => table.HasCheckConstraint(
                 "CK_FuelTypes_Code_Format",
@@ -40,16 +43,23 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(s => s.Address).HasMaxLength(250).IsRequired();
             entity.Property(s => s.Description).HasMaxLength(500);
 
-            // Station IDs are bound to the station name, so names must be unique.
+            // Назва АЗС унікальна: за нею ID АЗС прив'язані до конкретної заправки.
+            // Унікальність самих ID АЗС гарантує первинний ключ StationTerminals.Number.
+            // Station name is unique: it binds station IDs to a specific station.
+            // Station IDs themselves are unique as the StationTerminals.Number primary key.
             entity.HasIndex(s => s.Name).IsUnique();
 
+            // Пришвидшує фільтрацію за містом.
             // Speeds up filtering by city.
             entity.HasIndex(s => s.City);
         });
 
         modelBuilder.Entity<StationTerminal>(entity =>
         {
-            // Business station ID is the natural primary key, assigned manually.
+            // ID АЗС — природний первинний ключ: унікальний у всій БД і задається вручну.
+            // Один ID не може належати двом АЗС одночасно.
+            // Station ID is the natural primary key: unique in the DB, assigned manually.
+            // One ID can't belong to two stations at the same time.
             entity.HasKey(t => t.Number);
             entity.Property(t => t.Number).ValueGeneratedNever();
 
@@ -69,12 +79,15 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         {
             entity.Property(f => f.FuelTypeCode).HasMaxLength(20).IsRequired();
 
+            // numeric(10, 2): точне зберігання грошових сум.
             // numeric(10, 2): exact money precision.
             entity.Property(f => f.Price).HasPrecision(10, 2);
 
+            // Бізнес-правило: один запис на кожен вид пального на АЗС.
             // Business rule: one record per fuel type per station.
             entity.HasIndex(f => new { f.StationId, f.FuelTypeCode }).IsUnique();
 
+            // Бізнес-правило продубльоване в БД: ціна має бути додатною.
             // Business rule duplicated at DB level: price must be positive.
             entity.ToTable(table => table.HasCheckConstraint(
                 "CK_StationFuels_Price_Positive",
@@ -85,6 +98,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .HasForeignKey(f => f.StationId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Вид пального, що продається на АЗС, не видаляється — лише деактивується.
             // A fuel type used at any station can't be deleted, only deactivated.
             entity.HasOne(f => f.FuelType)
                 .WithMany(t => t.StationFuels)

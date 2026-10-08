@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FuelStations.Controllers;
 
 /// <summary>
+/// Довідник видів пального. Кожен вид адресується своїм кодом (наприклад, A95).
 /// Fuel types reference API. Each fuel type is addressed by its code (e.g. A95).
 /// </summary>
 [ApiController]
@@ -14,6 +15,7 @@ namespace FuelStations.Controllers;
 public class FuelTypesController(AppDbContext db) : ApiControllerBase
 {
     /// <summary>
+    /// Повертає види пального. Неактивні включаються лише з includeInactive=true.
     /// Returns fuel types. Inactive ones are included only when includeInactive=true.
     /// </summary>
     [HttpGet]
@@ -36,7 +38,8 @@ public class FuelTypesController(AppDbContext db) : ApiControllerBase
     }
 
     /// <summary>
-    /// Returns a fuel type by its code.
+    /// Повертає вид пального за кодом (регістр не важливий).
+    /// Returns a fuel type by its code (case-insensitive).
     /// </summary>
     [HttpGet("{code}")]
     public async Task<ActionResult<FuelTypeDto>> GetFuelType(string code)
@@ -53,6 +56,7 @@ public class FuelTypesController(AppDbContext db) : ApiControllerBase
     }
 
     /// <summary>
+    /// Створює новий вид пального. Код приводиться до верхнього регістру.
     /// Creates a new fuel type. The code is normalized to upper case.
     /// </summary>
     [HttpPost]
@@ -83,6 +87,7 @@ public class FuelTypesController(AppDbContext db) : ApiControllerBase
     }
 
     /// <summary>
+    /// Змінює назву та активність. Код змінити не можна.
     /// Updates the name and active flag. The code is immutable.
     /// </summary>
     [HttpPut("{code}")]
@@ -117,6 +122,8 @@ public class FuelTypesController(AppDbContext db) : ApiControllerBase
     }
 
     /// <summary>
+    /// Видаляє вид пального, який не продається на жодній АЗС.
+    /// Вид, що продається, можна лише деактивувати.
     /// Deletes a fuel type that isn't used at any station.
     /// Used fuel types must be deactivated instead.
     /// </summary>

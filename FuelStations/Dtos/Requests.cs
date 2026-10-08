@@ -4,6 +4,7 @@ using FuelStations.Common;
 namespace FuelStations.Dtos;
 
 /// <summary>
+/// Параметри пошуку АЗС з пагінацією.
 /// Query parameters for station search with pagination.
 /// </summary>
 public class StationQuery
@@ -13,11 +14,13 @@ public class StationQuery
     public bool? IsActive { get; set; }
 
     /// <summary>
-    /// Fuel type code available at the station (e.g. A95).
+    /// Код пального, яке є в наявності на АЗС (наприклад, A95BIO).
+    /// Fuel type code in stock at the station (e.g. A95BIO).
     /// </summary>
     public string? FuelType { get; set; }
 
     /// <summary>
+    /// Пошук АЗС за будь-яким її ID.
     /// Find a station by any of its station IDs.
     /// </summary>
     public int? Number { get; set; }
@@ -30,6 +33,7 @@ public class StationQuery
 }
 
 /// <summary>
+/// Дані для створення виду пального.
 /// Payload for creating a fuel type.
 /// </summary>
 public class CreateFuelTypeRequest
@@ -46,6 +50,7 @@ public class CreateFuelTypeRequest
 }
 
 /// <summary>
+/// Редаговані дані виду пального. Код незмінний, тому його тут немає.
 /// Editable fuel type info. The code is immutable and not part of this payload.
 /// </summary>
 public class UpdateFuelTypeRequest
@@ -59,6 +64,7 @@ public class UpdateFuelTypeRequest
 }
 
 /// <summary>
+/// ID АЗС з необов'язковим описом.
 /// Station ID with an optional description.
 /// </summary>
 public class TerminalRequest
@@ -72,6 +78,7 @@ public class TerminalRequest
 }
 
 /// <summary>
+/// Редаговані дані АЗС. ID АЗС незмінні, тому їх тут немає.
 /// Editable station info. Station IDs are immutable and not part of this payload.
 /// </summary>
 public class UpdateStationRequest
@@ -96,6 +103,7 @@ public class UpdateStationRequest
 }
 
 /// <summary>
+/// Дані для створення АЗС: інформація про АЗС і щонайменше один ID.
 /// Payload for creating a station: station info plus at least one station ID.
 /// </summary>
 public class CreateStationRequest : UpdateStationRequest
@@ -106,6 +114,7 @@ public class CreateStationRequest : UpdateStationRequest
 }
 
 /// <summary>
+/// Дані для додавання виду пального на АЗС.
 /// Payload for adding a fuel type to a station.
 /// </summary>
 public class AddFuelRequest
@@ -122,6 +131,7 @@ public class AddFuelRequest
 }
 
 /// <summary>
+/// Часткова зміна ціни та/або наявності пального.
 /// Partial update of fuel price and/or availability.
 /// </summary>
 public class UpdateFuelRequest
