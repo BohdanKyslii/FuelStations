@@ -37,7 +37,7 @@ REST API для керування АЗС, довідником видів па�
 Потрібні **.NET SDK 10** і **Docker Desktop**.
 
 ```powershell
-git clone <url-репозиторію>
+git clone https://github.com/BohdanKyslii/FuelStations.git
 cd FuelStations
 docker compose up -d
 dotnet run --project FuelStations --launch-profile http
