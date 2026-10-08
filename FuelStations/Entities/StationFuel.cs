@@ -1,7 +1,7 @@
 ﻿namespace FuelStations.Entities;
 
 /// <summary>
-/// Fuel offered at a station, with its current price.
+/// Пальне на АЗС з поточною ціною та наявністю.
 /// </summary>
 public class StationFuel
 {
@@ -12,7 +12,7 @@ public class StationFuel
     public Station Station { get; set; } = null!;
 
     /// <summary>
-    /// Foreign key to <see cref="FuelType.Code"/>.
+    /// Зовнішній ключ на <see cref="FuelType.Code"/>.
     /// </summary>
     public string FuelTypeCode { get; set; } = string.Empty;
 

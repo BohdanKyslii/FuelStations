@@ -1,7 +1,7 @@
 ﻿namespace FuelStations.Common;
 
 /// <summary>
-/// Pagination limits shared by validation attributes and controllers.
+/// Межі пагінації, спільні для атрибутів валідації та контролерів.
 /// </summary>
 public static class Pagination
 {

@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 namespace FuelStations.Controllers;
 
 /// <summary>
-/// Fuel types reference API. Each fuel type is addressed by its code (e.g. A95).
+/// Довідник видів пального. Кожен вид адресується своїм кодом (наприклад, A95).
 /// </summary>
 [ApiController]
 [Route("api/fuel-types")]
 public class FuelTypesController(AppDbContext db) : ApiControllerBase
 {
     /// <summary>
-    /// Returns fuel types. Inactive ones are included only when includeInactive=true.
+    /// Повертає види пального. Неактивні включаються лише з includeInactive=true.
     /// </summary>
     [HttpGet]
     public async Task<ActionResult<List<FuelTypeDto>>> GetFuelTypes(
@@ -36,7 +36,7 @@ public class FuelTypesController(AppDbContext db) : ApiControllerBase
     }
 
     /// <summary>
-    /// Returns a fuel type by its code.
+    /// Повертає вид пального за кодом (регістр не важливий).
     /// </summary>
     [HttpGet("{code}")]
     public async Task<ActionResult<FuelTypeDto>> GetFuelType(string code)
@@ -53,7 +53,7 @@ public class FuelTypesController(AppDbContext db) : ApiControllerBase
     }
 
     /// <summary>
-    /// Creates a new fuel type. The code is normalized to upper case.
+    /// Створює новий вид пального. Код приводиться до верхнього регістру.
     /// </summary>
     [HttpPost]
     public async Task<ActionResult<FuelTypeDto>> CreateFuelType(CreateFuelTypeRequest request)
@@ -83,7 +83,7 @@ public class FuelTypesController(AppDbContext db) : ApiControllerBase
     }
 
     /// <summary>
-    /// Updates the name and active flag. The code is immutable.
+    /// Змінює назву та активність. Код змінити не можна.
     /// </summary>
     [HttpPut("{code}")]
     public async Task<ActionResult<FuelTypeDto>> UpdateFuelType(
@@ -117,8 +117,8 @@ public class FuelTypesController(AppDbContext db) : ApiControllerBase
     }
 
     /// <summary>
-    /// Deletes a fuel type that isn't used at any station.
-    /// Used fuel types must be deactivated instead.
+    /// Видаляє вид пального, який не продається на жодній АЗС.
+    /// Вид, що продається, можна лише деактивувати.
     /// </summary>
     [HttpDelete("{code}")]
     public async Task<IActionResult> DeleteFuelType(string code)

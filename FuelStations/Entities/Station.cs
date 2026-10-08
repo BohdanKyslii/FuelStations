@@ -1,12 +1,12 @@
 ﻿namespace FuelStations.Entities;
 
 /// <summary>
-/// Gas station (physical site). Addressed in the API by any of its station IDs.
+/// АЗС (фізична заправка). В API адресується будь-яким зі своїх ID.
 /// </summary>
 public class Station
 {
     /// <summary>
-    /// Technical database key. Used only for table relations, never exposed in the API.
+    /// Технічний ключ БД. Лише для зв'язків між таблицями, в API не виходить.
     /// </summary>
     public int Id { get; set; }
 
@@ -19,19 +19,19 @@ public class Station
     public string? Description { get; set; }
 
     /// <summary>
-    /// True if the station is operating, false if temporarily closed.
+    /// true — АЗС працює, false — тимчасово закрита.
     /// </summary>
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     /// <summary>
-    /// Business station IDs (one per cashier window).
+    /// Бізнес-ID АЗС (по одному на вікно каси оператора).
     /// </summary>
     public List<StationTerminal> Terminals { get; set; } = [];
 
     /// <summary>
-    /// Fuels sold at this station with current prices.
+    /// Пальне, що продається на цій АЗС, з поточними цінами.
     /// </summary>
     public List<StationFuel> Fuels { get; set; } = [];
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FuelStations.Controllers;
 
 /// <summary>
-/// Shared helpers for API controllers: unified error responses and safe saving.
+/// Спільні помічники для контролерів API: єдиний формат помилок і безпечне збереження.
 /// </summary>
 public abstract class ApiControllerBase : ControllerBase
 {
@@ -17,8 +17,8 @@ public abstract class ApiControllerBase : ControllerBase
             title: "Некоректні дані");
 
     /// <summary>
-    /// Saves changes; returns false if a database constraint was violated
-    /// (e.g. a duplicate created by a concurrent request).
+    /// Зберігає зміни; повертає false, якщо порушено обмеження БД
+    /// (наприклад, дублікат, створений паралельним запитом).
     /// </summary>
     protected static async Task<bool> TrySaveChangesAsync(DbContext db)
     {
@@ -34,7 +34,8 @@ public abstract class ApiControllerBase : ControllerBase
     }
 
     /// <summary>
-    /// Normalizes a business code: trims spaces and converts to upper case ("a95 " → "A95").
+    /// Нормалізує бізнес-код: прибирає пробіли й переводить у верхній регістр
+    /// ("a95 " → "A95").
     /// </summary>
     protected static string NormalizeCode(string code) => code.Trim().ToUpperInvariant();
 

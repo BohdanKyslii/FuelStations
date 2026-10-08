@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FuelStations.Data;
 
 /// <summary>
-/// EF Core database context: entry point for all queries and schema configuration.
+/// Контекст БД EF Core: точка входу для всіх запитів і налаштування схеми.
 /// </summary>
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
@@ -20,14 +20,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     {
         modelBuilder.Entity<FuelType>(entity =>
         {
-            // Business code is the natural primary key.
+            // Бізнес-код — природний первинний ключ.
             entity.HasKey(f => f.Code);
             entity.Property(f => f.Code).HasMaxLength(20);
             entity.Property(f => f.Name).HasMaxLength(50).IsRequired();
 
             entity.HasIndex(f => f.Name).IsUnique();
 
-            // Code format: 2-20 upper-case Latin letters, digits or "_".
+            // Формат коду: 2–20 великих латинських літер, цифр або "_".
             entity.ToTable(table => table.HasCheckConstraint(
                 "CK_FuelTypes_Code_Format",
                 "\"Code\" ~ '^[A-Z0-9_]{2,20}$'"));
@@ -40,16 +40,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(s => s.Address).HasMaxLength(250).IsRequired();
             entity.Property(s => s.Description).HasMaxLength(500);
 
-            // Station IDs are bound to the station name, so names must be unique.
+            // ID АЗС прив'язані до назви АЗС, тому назви мають бути унікальними.
             entity.HasIndex(s => s.Name).IsUnique();
 
-            // Speeds up filtering by city.
+            // Пришвидшує фільтрацію за містом.
             entity.HasIndex(s => s.City);
         });
 
         modelBuilder.Entity<StationTerminal>(entity =>
         {
-            // Business station ID is the natural primary key, assigned manually.
+            // Бізнес-ID АЗС — природний первинний ключ, задається вручну.
             entity.HasKey(t => t.Number);
             entity.Property(t => t.Number).ValueGeneratedNever();
 
@@ -69,13 +69,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         {
             entity.Property(f => f.FuelTypeCode).HasMaxLength(20).IsRequired();
 
-            // numeric(10, 2): exact money precision.
+            // numeric(10, 2): точне зберігання грошових сум.
             entity.Property(f => f.Price).HasPrecision(10, 2);
 
-            // Business rule: one record per fuel type per station.
+            // Бізнес-правило: один запис на кожен вид пального на АЗС.
             entity.HasIndex(f => new { f.StationId, f.FuelTypeCode }).IsUnique();
 
-            // Business rule duplicated at DB level: price must be positive.
+            // Бізнес-правило продубльоване в БД: ціна має бути додатною.
             entity.ToTable(table => table.HasCheckConstraint(
                 "CK_StationFuels_Price_Positive",
                 "\"Price\" > 0"));
@@ -85,7 +85,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .HasForeignKey(f => f.StationId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // A fuel type used at any station can't be deleted, only deactivated.
+            // Вид пального, що продається на АЗС, не видаляється — лише деактивується.
             entity.HasOne(f => f.FuelType)
                 .WithMany(t => t.StationFuels)
                 .HasForeignKey(f => f.FuelTypeCode)
